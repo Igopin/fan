@@ -1,0 +1,782 @@
+% FAN for dummies
+% Written by Igor Pinaev, SPbSTU, 2015
+% Edited by Eugene Nemich 
+
+\documentclass{article}
+
+\usepackage[russian]{babel}   
+\usepackage[utf8]{inputenc}
+%\usepackage[T2A]{fontenc}
+
+\usepackage[a4paper, includefoot, 
+  left=1.0cm, right=1.0cm, 
+  top=1.0cm, bottom=1.0cm, 
+  headsep=1cm, footskip=1cm]{geometry}
+
+\usepackage{amsthm, amsmath, amssymb}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\usepackage[fontsize=14]{scrextend}
+\renewcommand{\baselinestretch}{1.2}
+
+\newtheoremstyle{truestyle}
+  {\topsep}{\topsep}%
+  {\rmfamily}{}%
+  {\bfseries}{}%
+  {\newline}{}%
+
+\theoremstyle{truestyle}
+\newtheorem*{defenition}{Определение}
+\newtheorem*{theorem}{Теорема}
+\newtheorem*{lemma}{Лемма}
+\newtheorem*{utv}{Утверждение}
+\newtheorem*{sled}{Следствие}
+\newtheorem*{zam}{Замечание}
+%\pagestyle{empty}
+
+\DeclareMathSizes{14}{14}{8}{6}
+
+%%%%%%%%%%%%%% MY COMMANDS %%%%%%%%%%%%%
+\newcommand{\n}{\vspace{\baselineskip}}  
+\newcommand{\weakconv}{\xrightharpoonup{\quad\,}}
+\newcommand{\Ker}{\text{Ker}}
+\newcommand{\dist}{\text{dist}}
+\newcommand{\Lin}{\text{Lin}}
+\newcommand{\eqdef}{\overset{\text{\tiny def}}=}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{
+\def\letus{%
+	\mathord{\setbox0=\hbox{$\exists$}%
+		\hbox{\kern 0.125\wd0%
+			\vbox to \ht0{%
+				\hrule width 0.75\wd0%
+				\vfill%
+				\hrule width 0.75\wd0}%
+			\vrule height \ht0%
+			\kern 0.125\wd0}%
+	}%
+}
+
+\begin{document}
+
+\begin{center}
+  {\Large \bf ФАН}\\
+  2 семестр
+\end{center}
+
+\section*{Гильбертовы пространства}
+
+\begin{defenition}[Скалярное произведение]
+  $\letus$ $E$ - линейное пространство над $\mathbb{C}(\mathbb{R})$\\
+  На $E$ введено скалярное произведение если определена функция: $E \times E \rightarrow \mathbb{C}(\mathbb{R})$ и для неё верно:\\
+  \begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+      \item $(u, v) = \overline{(v, u)} (= (v, u)), \; \forall v, u \in E$
+      \item $(u + v, w) = (u, w) + (v, w), \; \forall u, v, w \in E$
+      \item $(\lambda u, v) = \lambda(u, v), \; \forall u, v \in E, \; \forall \lambda \in \mathbb{C}(\mathbb{R})$
+      \item $(u, u) \in \mathbb{R}$ (вытекает из п 1) \\
+      $(u, u) \ge 0, \; (u, u) = 0 \Leftrightarrow u = 0$ 
+    \end{enumerate}\end{minipage}
+\end{defenition}
+
+\begin{sled} 
+	\begin{minipage}[t]{0.8\linewidth}\begin{enumerate}
+		\item  $(u, \lambda v) = \overline\lambda(u, v), \; \forall v, u \in E, \; \forall \lambda \in \mathbb{C}(\mathbb{R})$
+		\item  $(u, v+w) = (u, v) + (u, w)$
+	\end{enumerate}\end{minipage}
+\end{sled}
+
+\begin{theorem}[Неравенство Коши-Буняковского-Шварца]
+  $\letus$ $u, v \in E$ -- евклидово\\
+  Тогда $|(u, v)| \le \sqrt{(u, u)} \cdot \sqrt{(v, v)}$ 
+\end{theorem}
+
+\begin{defenition}[Гильбертово пространство]
+  Бесконечномерное полное евклидово пространство называется гильбертовым.
+\end{defenition}
+
+\begin{defenition}[Унитарное пространство]
+  Гильбертово пространство над полем $\mathbb{C}$ называется унитарным.
+\end{defenition}
+
+\begin{utv}[Тождество Апполония]
+  $\letus$ $x, y, z \in E$ -- евклидово пространство\\
+  Тогда $$||z - x||^2 + ||z - y||^2 = \frac{1}{2} ||x - y||^2  + 2 \left|\left|z - \frac{x+y}{2}\right|\right|^2$$
+\end{utv}
+
+\begin{defenition}[Выпуклое множество]
+  $M \subset E$ -- выпуклое (в $E$ -- е п.),
+  если $\forall x, y \in M, \; \forall \lambda \in (0, 1)$: $$\lambda x + (1-\lambda)y \in M$$
+\end{defenition}
+
+\begin{defenition}[Расстояние, ближайший элемент]
+  $\letus$ $x \in X$, $X$ -- нормированное пространство; $A \subset X$\\
+  Расстояние: $\dist(x, A) \eqdef  \inf\limits_{y\in A}||x - y||$\\
+  Ближайший элемент $a$ к $x$ в $A$ : $||a - x|| = \dist(x, A)$
+\end{defenition}
+
+\begin{theorem}[О ближайшем элементе]
+  $\letus$ $M \subset U$, $U$ -- гильбертово пространство, $M$ -- выпуклое замкнутое\\
+  Тогда $\forall x \in U, \, \exists! \, x_m \in M: x_m$ -- ближайший элемент в $M$
+\end{theorem}
+
+\begin{lemma}[О непрерывности скалярного проведения]
+  $\letus$ $E$ -- евклидово пространство\\
+  $\letus$ $u_n \longrightarrow u$, $v_n \longrightarrow v$ в $E$\\
+  Тогда $(u_n, v_n) \longrightarrow (u, v)$
+\end{lemma}
+
+\begin{defenition}[Ортогональное дополнение]
+  $\letus$ $M \subset U$ -- гильбертово пространство\\
+  $M^{\perp} = \{v \in U \mid (v, u) = 0, \; \forall u \in M \}$ -- ортогональное дополнение к $M$\\
+  Бонус: $M^{\perp}$ -- подпространство в $U$
+\end{defenition}
+
+\begin{defenition}[Сумма, прямая сумма]
+  $\letus$ $M, N$ -- подпространства в $U$\\
+  $M + N \eqdef \{w \in U \mid \exists \, u \in M; v\in N: w = u + v\}$ -- сумма\\
+  $M \oplus N \eqdef \{w \in U \mid \exists ! \, (u \in M; v\in N): w = u + v\}$ -- прямая сумма
+\end{defenition}
+
+\begin{theorem}[О разложении в прямую сумму]
+  $\letus$ $M$ -- подпространство в гильбертовом пространстве $U$\\
+  Тогда\begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+    \item $U = M \oplus M^{\perp}$
+    \item $(M^{\perp})^{\perp} = M$
+  \end{enumerate}\end{minipage}
+\end{theorem}
+
+\begin{defenition}[Ортогональная система векторов]
+  $\letus$ $U$ -- гильбертово пространство\\
+  Система векторов $\{\varphi_k\}_{k\in \mathbb{N}} \in U$ ортогональная, если $(\varphi_i, \varphi_j) = 0, \; i \not= j$
+\end{defenition}
+
+\begin{defenition}[Ортонормированная система векторов]
+  $\letus$ $U$ -- гильбертово пространство\\
+  Система векторов $\{e_i\}_{i \in \mathbb{N}} \in U$ ортонормированная (о.н.с.), если
+  $(e_i, e_j) = \delta_{ij} = \left\{ \begin{aligned}0, i \not= j\\ 1, i = j\end{aligned} \right.$
+\end{defenition}
+
+\begin{theorem}
+  $\letus$ $U$ -- гильбертово пространство  $\{e_k\}_{k \in \mathbb{N}}$ -- онс\\
+  Тогда\begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+      \item $\sum\limits_{k = 1}^{\infty}c_k e_k$ -- сходятся $\Leftrightarrow$ $\sum\limits_{k = 1}^{\infty}|c_k|^2$ -- сходится
+      \item Сумма ряда не зависит от порядка суммирования.
+      \item $f = \sum\limits_{k = 1}^{\infty}c_k e_k \Rightarrow ||f||^2 = \sum\limits_{k = 1}^{\infty} |c_k|^2$
+  \end{enumerate}\end{minipage}
+\end{theorem}
+
+\begin{defenition}[Линейная оболочка]
+  $\letus$ $A$ некоторое множество векторов $A = \{e_\alpha\}_{\alpha \in \Lambda}$\\
+  $\Lin(A) = \{y \in U \mid \exists c_1, \dots c_k \in \mathbb{R}; \; e_{1}, \dots, e_{k} \in A: 
+  y = \sum\limits_{i=1}^{k}c_i e_{i}\}$ -- линейная оболочка $A$
+\end{defenition}
+
+\begin{theorem}
+  $\letus$ $\{e_k\}_{k \in \mathbb{N}}$ -- онс в гильбертовом пространстве $U$\\
+  $\letus$ $L_n = \Lin(\{e_k\}_{k=1}^{n})$, $u \in U$\\
+  Тогда $P_{L_n}u = \sum\limits_{k=1}^{n}(u, e_k)e_k$
+\end{theorem}
+
+\begin{defenition}[Неравенство Бесселя]
+  $\letus$ $\{e_k\}_{k \in \mathbb{N}}$ -- онс в гильбертовом пространстве $U$\\
+  Тогда $||u||^2 \ge \sum\limits_{k=1}^{\infty}(u, e_k)^2$
+\end{defenition}
+
+\begin{defenition}[Ряд Фурье]
+  $\letus$ $\{e_k\}_{k \in \mathbb{N}}$ -- онс в гильбертовом пространстве $U$, $\letus$ $u \in U$\\
+  Тогда $\sum\limits_{k=1}^{\infty}(u, e_k)e_k$ -- ряд Фурье элемента $u$ по системе $\{e_k\}$\\
+  $\forall u \in U, \; \forall \{e_k\}_{k \in \mathbb{N}}$\\
+  $\exists \; T(u) = \sum\limits_{k=1}^{\infty}(u, e_k)e_k$
+\end{defenition}
+
+\begin{defenition}[Замкнутая онс, равенство Парсеваля]
+  $\letus$ $\{e_k\}_{k \in \mathbb{N}}$ -- онс замкнута относительно $u \in U$ ($U$ -- г п.) $\Leftrightarrow$ \\
+  $\Leftrightarrow ||u||^2 = \sum\limits_{k=1}^{\infty}(u, e_k)^2$ -- равенство Парсеваля 
+\end{defenition}
+
+\begin{defenition}[Полная онс, ортонормированный базис]
+  $\letus$ $\{e_k\}_{k \in \mathbb{N}}$ -- полная онс в гильбертовом пространстве $U$, если она замкнута относительно
+  любого элемента из $U$: $\forall u \in U$ $||u||^2 = \sum\limits_{k=1}^{\infty}(u, e_k)^2$
+\end{defenition}
+
+
+\begin{theorem}[О полноте тригонометрических функций в $L^2(-\pi, \pi)$]
+  $e_0 = \frac{1}{\sqrt{2\pi}}$\\
+  $e_{2k-1}(x) = \frac{1}{\sqrt{2\pi}} \cos(kx), \, e_{2k}(x) = \frac{1}{\sqrt{2\pi}}\sin(kx), \; x \in (-\pi, \pi), \; k \in \mathbb{N}$\\
+  Система $e_{2k-1}, e_{2k}$ -- онб в $L^2$
+\end{theorem}
+
+\begin{theorem}[Критерий базиса]
+  $\letus$ $\{e_1, e_2, \dots e_k, \dots\}$ -- онс в гильбертовом пространстве $U$\\
+  $\{e_1, e_2, \dots e_k, \dots\}$ -- онб $\Longleftrightarrow$ $U = \overline{\Lin}\{e_1, e_2, \dots e_k, \dots\}$
+\end{theorem}
+
+\begin{theorem}[О существовании онб]
+  В сепарабельном гильбертовом пространстве существует хотя бы один онб
+\end{theorem}
+
+\section*{Линейные операторы}
+
+\begin{defenition}[Оператор, область опр оператора, область значений оператора]
+  $\letus$ $X, Y$ -- множества.
+  Оператором действующим из $X$ в $Y$ называется однозначное соответствие между элементами $X$ и $Y$\\
+  $D(A) = \{x \in X \mid \exists y \in Y: y = A(x)\}$ -- область определения оператора\\
+  $R(A) = \{y \in Y \mid \exists x \in D(A): y = A(x)\}$ -- область значений оператора
+\end{defenition}
+
+\begin{defenition}[Инъективный оператор]
+  Оператор $A: D(A) \rightarrow Y$ инъективный, если \\
+  $\forall y \in R(A), \; \exists! x \in D(A): y = A(x)$; взаимооднозначное отображение
+\end{defenition}
+
+\begin{defenition}[Сюрьективный оператор]
+  Оператор $A: D(A) \rightarrow Y$ сюрьективен (оператор "на"), если $R(A) = Y$
+\end{defenition}
+
+\begin{defenition}[Биективный оператор]
+  Оператор $A$ биективен, если он сюрьективен и инъективен
+\end{defenition}
+
+\begin{defenition}[Непрерывный оператор]
+  $\letus$ $X, Y$ -- метрические пространства\\
+  Оператор $A$ непрерывен в $(\cdot)$ x, если\\
+  $\forall \{x_n\}_{n \in \mathbb{N}} \subset D(A): x_n \rightarrow x$ в $X$ $\Longrightarrow$ $A(x_n) \rightarrow A(x)$ в $Y$
+\end{defenition}
+
+\begin{defenition}[Линейный оператор]
+  $A: X \longrightarrow Y$ -- линейный оператор ($A \in L(X, Y)$), \\ если: 
+  \begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+    \item $D(A)$ -- линейное многообразие в $X$
+    \item $A(\alpha x + \beta y) = \alpha A(x) + \beta A(y), \; 
+    \forall x, y \in D(A), \; \forall \alpha, \beta \in \mathbb{R}(\mathbb{C})$
+  \end{enumerate}\end{minipage}
+\end{defenition}
+
+\begin{defenition}[Функционал]
+  $\letus$ $X$ -- линейное пространство над $\mathbb{R}(\mathbb{C})$, $A: X \longrightarrow \mathbb{R}(\mathbb{C})$,
+  тогда $A$ -- функционал  
+\end{defenition}
+
+\begin{defenition}[Ядро оператора]
+  $\letus$ $X, Y$ -- линейные пространства, $A \in L(X, Y)$\\
+  $\Ker(A) \eqdef \{x \in D(A) \mid Ax = 0_y\}$
+\end{defenition}
+
+\begin{defenition}[Ограниченный оператор]
+  $\letus$ $X, Y$ -- нормированные пространства, $A: X \longrightarrow Y$, $A \in L(X, Y)$ называется ограниченным ($\Leftrightarrow A\in B(X, Y)$), если
+  $\exists c \ge 0: ||Ax||_Y \le c ||x||_X \; (*) \; \forall x \in D(A)$\\
+  $\inf c = ||A||$ (по всем $c$, для которых $(*)$ выполняется)
+\end{defenition}
+  
+\begin{lemma}[О непрерывности линейного оператора]
+  $\letus$ $X$, $Y$ -- нормированные пространства,
+  $A \in L(X, Y)$ \\
+  $A$ -- непрерывен в $(\cdot) 0$ \\
+  Тогда $A$ -- непрерывен на $D(A)$
+\end{lemma}
+
+\begin{theorem}
+  $\letus$ $X$, $Y$ нормированные пространства, $A \in L(X, Y)$\\
+  Тогда $A$ -- непрерывен $\Longleftrightarrow$ $A \in B(X, Y)$
+\end{theorem}
+
+\begin{defenition}[Продолжение и сужение оператора]
+  $\letus$ $A_0, A: X \longrightarrow Y$, $D(A) \subset D(A_0)$, $A_0x=Ax, \; \forall x \in D(A)$\\
+  Тогда 
+  \begin{tabular}[t]{l}
+    $A_0$ -- продолжение оператора $A$\\
+    $A$ -- сужение оператора $A_0$
+  \end{tabular}
+\end{defenition}
+
+\begin{theorem}[О продолжении лин. оператора с всюду плотной областью определения]
+  $\letus$ $X$ -- нп., $Y$ -- банахово пространство, $A \in B(X, Y)$, $\overline{D(A)} = X$\\
+  Тогда $\exists! \; A_0 \in B(X, Y): D(A_0) = X, \; ||A_0|| = ||A||$, где $A_0$ продолжение $A$\\
+  {\bf Бонус-определение:} такое продолжение называется продолжением по непрерывности
+\end{theorem}
+
+\begin{defenition}[Сумма операторов]
+  $\letus$ $A, B \in L(X, Y)$, $D(A + B) = D(A) \cap D(B)$\\
+  $(A+B)x \eqdef Ax + Bx, \; \forall x \in D(A+B)$ -- сумма операторов 
+\end{defenition}
+
+\begin{defenition}[Умножение оператора на число]
+  $\letus$ $A \in L(X, Y)$, $\lambda \in \mathbb{R}(\mathbb{C})$, $D(\lambda A) = D(A)$\\
+  $(\lambda A)x \eqdef \lambda(Ax), \; \forall x \in D(A)$ -- произведение оператора на число 
+\end{defenition}
+
+\begin{utv} [1]
+	$L(X, Y)$ -- лп над $\mathbb{R}(\mathbb{C})$ относительно сложения, умножения на число
+\end{utv}
+
+\begin{utv} [2]
+	$B(X, Y)$ -- линейное многообразие в $L(X, Y)$
+\end{utv}
+
+\begin{utv} [3]
+	$B(X, Y)$ -- нп относительно $||A||= \inf c$
+\end{utv}
+
+\begin{lemma}[О вычислении нормы оператора]
+  $\letus$ $A \in B(X, Y), \quad ||Ax|| \le c||x||$\\ 
+  Тогда
+  $$ ||A|| = \sup_{||x|| \ne 0}\frac{||Ax||_{y}}{||x||_{x}} = \sup_{||x|| = 1}||Ax||_{y} = 
+  \sup_{||x|| \le 1}||Ax||_{y} = \sup_{||x|| < 1}||Ax||_{y}$$
+\end{lemma}
+
+\begin{theorem}
+	$\letus$ $X$ -- нп, $Y$ -- бп, тогда $B(X, Y)$ -- бп
+\end{theorem}
+
+\begin{theorem}[Принцип равномерное ограниченности]
+  $\letus$ $X$-- бп, $Y$ -- нп., $ \{A_n\}_{n \in \mathbb{N}} \subset B(X,Y)$\\
+  Тогда следующие утверждения эквивалентны:
+  \begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+      \item $\sup\limits_{n \in \mathbb{N}} ||A_n|| < \infty$
+      \item $\sup\limits_{n \in \mathbb{N}} ||A_n x|| < \infty, \; \forall x \in X$
+  \end{enumerate}\end{minipage}
+\end{theorem}
+
+\begin{theorem}[Банаха-Штейнгауза]
+  $\letus$ $X$-- бп, $Y$ -- нп., \\ $ \{A_n\}_{n \in \mathbb{N}} \subset B(X,Y)$, $D(A_n) = X$, \\ $A\subset B(X,Y)$, $D(A) = X$\\
+  Тогда
+  $$A_n x \underset{n\to \infty}\longrightarrow Ax, \, \forall x \in X \Longleftrightarrow \left\{
+  \begin{aligned}
+    & 1\; A_n x \longrightarrow Ax, \, \forall x \in X_0, \,\overline{X_0} = X\\
+    & 2\; \sup\limits_{n \in \mathbb{N}} ||A_n|| < \infty
+  \end{aligned} \right.$$
+\end{theorem}
+
+\begin{theorem}[Сегё]
+  \noindent
+  \begin{multline*}
+   \sum\limits_{k=1}^{n} A_{k,n} f(t_k) \underset{n\to\infty}{\longrightarrow}  \int\limits_{0}^{1} f(t) dt, \, \forall f \in C([0, 1])
+  \xLeftrightarrow{\;\; \text{\tiny НиД} \;\;} \\ \xLeftrightarrow{\;\; \text{\tiny НиД} \;\;}
+  \left\{ 
+  \begin{aligned} & 1\, \sum\limits_{k=1}^{n} A_{k,n} g(t_k) \underset{n\to\infty}{\longrightarrow} 
+  \int\limits_{0}^{1} g(t) dt, \; \forall g \in X_0, \, \overline{X_0} = C([0, 1])\\
+   & 2\, \sup\limits_{k \in \mathbb{N}} \sum\limits_{k=1}^{n} |A_{k,n}| < \infty
+  \end{aligned} \right.
+  \end{multline*}
+\end{theorem}
+
+\begin{defenition}[Обратный оператор]
+  $\letus$ $A:X\rightarrow Y \in L(X, Y)$, $A$ -- инъективен\\
+  $A^{-1}:Y\rightarrow X$ -- обратный оператор, если $D(A^{-1}) = R(A)$, $x = A^{-1}y \Longleftrightarrow y = Ax$
+  {\bfЗамечание:} если $A$ не инъективен, то нельзя говорить об $A^{-1}$
+\end{defenition}
+
+\begin{lemma}[О разложении в ряд]
+  $\letus$ $X$-- нп, $\overline{X_0} = X$\\
+  Тогда $\forall x \in X, \; \exists \,\{x_n\}_{n \in \mathbb{N}} \subset X_0:$
+  $$ x = \sum\limits_{k = 1}^{\infty} x_k (= \lim\limits_{n\to\infty}\sum\limits_{k = 1}^{n} x_k), \; 
+  ||x_k|| \le \frac{3}{2^k} ||x||, \; \forall k \in \mathbb{N}$$
+\end{lemma}
+
+\begin{theorem}[Банаха об обратном операторе]
+  $\letus$ $X, Y$ - банаховы пространства, $A \in B(X, Y)$ -- биективный, $D(A) = X$\\
+  Тогда существует $A^{-1} \in B(Y, X)$
+\end{theorem}
+
+\begin{defenition}[Шаровой слой]
+  $\letus$ $n \in \mathbb{N}: \, \exists \, B = B(y_0, r) \subset Y: B\subset \overline{M_n}$\\
+  Шаровым слоем называется множество:
+  $$P = \{y \in Y \mid \alpha < ||y - y_0|| < \beta \}, \; \alpha < \beta < r, \, y_0 \in M_n, \, P \subset B$$
+\end{defenition}
+
+\begin{theorem}
+  $\letus$ $A \in L(X, Y), \; \exists \, m > 0: ||Ax||_Y \ge m||x||_X, \forall x \in D(A)$\\
+  Тогда $\exists \, A^{-1} \in B(Y, X), ||A^{-1}|| \le m^{-1}$\\
+  {\bf Бонус-определение:} $A$ -- коэрцетивный оператор
+\end{theorem}
+
+\begin{defenition}[Произведение операторов из  $B(x)$]
+  $\letus$ $X$ -- бп, $D(A) = X$, $B(X) = (X, X)$ -- тоже бп, $A, B \in B(X)$\\
+  Произведением операторов будем называть: $D(AB) = X$, $(AB)x = A(Bx), \; \forall x \in X$\\
+  {\bf Cв-ва} $B(X)$, $\forall A, B, C \in B(X) \; \forall \alpha, \beta \in  \mathbb{R}(\mathbb{C})`$:
+  \begin{enumerate}
+    \item $(AB)C = A(BC)$
+    \item $(B+C)A = BA+CA, \; \\ A(B+C) = AB+AC$
+    \item $(\alpha A)(\beta B) = (\alpha\beta)(AB)$
+    \item $\exists \, I \in B(X): AI = IA = A, \; \forall A \in B(X), I$ -- единичный
+    \item $||AB||_{B(x)} \le ||A|| \cdot ||B||, \; \forall A, B \in B(X)$
+    \item $||I|| = 1$
+  \end{enumerate}
+\end{defenition}
+
+\begin{defenition}[Банахова алгебра]
+  Банахова пространство с введенной операцией операторного произведения, для которого выполняются св-ва $B(X)$, называется 
+  Банаховой алгеброй.
+\end{defenition}
+
+
+\begin{theorem}[Фон-Неймана]
+  $\letus$ $A \in B(X), \; ||A|| < 1$, тогда $\exists \, (I - A)^{-1} \in B(X), \; (I - A)^{-1} = \sum\limits_{k=0}^{\infty} A^k$
+\end{theorem}
+
+\begin{theorem}[О возмущении обратимого ряда]
+  $\letus$ $A, A_0 \in B(X), \, A \in B(X): ||A_0^{-1}|| \cdot ||A - A_0|| \le 1$\\
+  Тогда $\exists \, A^{-1} \in B(X)$:
+  $$ A^{-1} = \left(\sum\limits_{k=0}^{\infty}[A_0^{-1}(A_0 - A)]^k\right)A_0^{-1},$$ 
+  $$||A_0^{-1} - A^{-1}|| \le \frac{||A_0^{-1}||^2 \cdot ||A_0 - A||}{1 - ||A_0^{-1}|| \cdot ||A_0 - A||}$$
+\end{theorem}
+
+\begin{defenition}[Резольвентное множество оператора]
+  $\rho(A)$ -- резольвентное множество оператора\\
+  Будем говорить, что $\lambda \in \rho(A) \overset{\text{\tiny def}} \Longleftrightarrow 
+    \exists \, (A - \lambda I)^{-1} \in B(X), \;  D((A - \lambda I)^{-1}) = X$
+\end{defenition}
+
+\begin{defenition}[Спектр оператора]
+  $\sigma(A)$ -- спектр оператора $A$ $\sigma(A) = \mathbb{R}(\mathbb{C}) \backslash \rho(A)$
+\end{defenition}
+
+\begin{defenition}[Точечный спектр]
+  $A - \lambda I$ -- не инъективен $\Longrightarrow Ax = \lambda x$\\
+  $\lambda$ -- собственное число оператора, $x$ -- собственный вектор\\
+  $\lambda \in \sigma_p$ -- множество собственных чисел, точечный спектр.
+\end{defenition}
+
+\begin{defenition}[Непрерывный спектр оператора]
+  $\letus$ $R(A - \lambda I) = X_0$ -- не замкнут в $X \Longleftrightarrow \lambda \in \sigma_c(A)$ -- непрерывный спектр.
+\end{defenition}
+
+\begin{defenition}[Остаточный спектр оператора]
+  $\letus$ $R(A - \lambda I)$ -- замкнут, но $R(A - \lambda I) \ne X \Longleftrightarrow \lambda \in \sigma_r(A)$ -- остаточный спектр.
+\end{defenition}
+
+\begin{defenition}[Спектральный радиус]
+	$r_{\sigma}(A) = \underset{\lambda \in \sigma(A)}{\sup} |\lambda|$ -- спектральный радиус
+\end{defenition}
+
+\begin{theorem}[Теорема Хана-Банаха]
+  $\letus$ $X$ -- нп, $L$ -- линейное многообразие в  $X$\\
+  $\letus$ $f \in B(X, \mathbb{R}), \; D(f) = L$\\
+  Тогда $\exists \, F \in B(X, \mathbb{R}): D(F) = X$; $F$ -- продолжение $f$; $||F|| = ||f||$
+\end{theorem}
+    
+\begin{sled}[1-ое, из теоремы Хана-Банаха]
+  $\letus$ $x \ne 0, \, x \in X$ -- н.п \\
+  Тогда $\exists f \ B(x, \mathbb{R}): ||f|| = 1; f(x) = ||x||$
+\end{sled}
+
+\begin{sled}[2-ое, из теоремы Хана-Банаха]
+  $\letus$ $x \in X$ -- н.п \\
+  $\letus$ $f(x) = 0, \, \forall f \in B(X, \mathbb{R})$ \\
+  Тогда $x = 0$
+\end{sled}
+
+\begin{sled}[3-е, из теоремы Хана-Банаха]
+  $\letus$ $L$ -- линейное многобразие в $X$, $x_0 \not \in L; \, \dist(x_0, L) = d >0$\\ 
+  Тогда $\exists \, f \in B(X, \mathbb{R}): f(x_0) = 1, f(y) = 0, \forall y \in L, ||f|| = \frac{1}{d}$
+\end{sled}
+  
+\begin{defenition}[Сопряженное пространство]
+  $\letus$ $X$ -- нп  (над  $\mathbb{R}(\mathbb{C})$) \
+  $X^* = B(X, \mathbb{R}) \, (B(X, \mathbb{C}))$ \\
+  $X^*$ -- сопряженное пространство. \ $f \in X^* \Longleftrightarrow D(f) = X$\\
+  $X^*$ -- бп, $||f||_{X^*} = \sup\limits_{||x|| \le 1} |f(x)|$
+\end{defenition}
+
+\begin{theorem}[Рисса 1]
+  $\letus$ $U$ - гильбертово пространство над $\mathbb{R}$
+  \begin{enumerate}
+    \item $\letus$ $u \in U; \, f(v) = (v, u), \, \forall v \in U$\\
+    Тогда $f \in U^*$ и $||f||_{U^*} = ||u||_U$
+    \item $\letus$ $f \in U^*$\\
+    Тогда $\exists! \, u\in U: f(v) = (v, u), \, \forall v \in U$ и $||u||_U = ||f||_{U^*}$
+    \end{enumerate}
+    Справедлива и для $\mathbb{C}$
+\end{theorem}
+
+\begin{theorem}[Рисса 2]
+  $\letus$ $1 < p < \infty$, $q = p^* = \frac{p}{p-1}$
+  \begin{enumerate}
+    \item $\letus$ $\xi \in l^q; \, f(x) = \sum\limits_{k=1}^{\infty} x_k \xi_k, \, \forall x = (x_1, x_2, \dots) \in l^p$\\
+    Тогда $f \in (l^p)^*$ и $||f||_{(l^p)^*} = ||\xi||_{l^q}$
+    \item $\letus$ $f \in (l^p)^*$\\
+    Тогда $\exists! \, \xi \in l^q: f(x) = \sum\limits_{k=1}^{\infty} x_k \xi_k, \, \forall x \in l^p$ 
+    и $||f||_{(l^p)^*} = ||\xi||_{l^q}$
+    \end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Рисса 3]
+  $\letus$ $1 < p < \infty$, $q = p^* = \frac{p}{p-1}$, $E$ -- измеримо, $\mu(E) < \infty$ 
+  \begin{enumerate}
+    \item $\letus$ $u \in L^q(E); \, f(v) = \int\limits_{E} u(x) v(x) dx, \, \forall v(x) \in L^p(E)$\\
+    Тогда $f \in (L^p(E))^*$ и $||f||_{(L^p(E))^*} = ||u||_{L^q(E)}$
+    \item $\letus$ $f \in (L^p(E))^*$\\
+    Тогда $\exists! \, u \in L^q(E): f(v) = \int\limits_{E} u(x) v(x) dx, \, \forall v(x) \in L^p(E)$ и $||u||_{L^q(E)} = ||f||_{(L^p(E))^*}$
+  \end{enumerate}
+\end{theorem}
+    
+\begin{defenition}[Слабая сходимость]
+  $x_n \underset{(\overset{w}{\longrightarrow})}{\weakconv} x$ -- слабо сходится, если $f(x_n) \longrightarrow f(x), \, \forall f \in X^*$ \\
+  Слабый предел единственный
+\end{defenition}
+
+\begin{utv}[2]
+	$x_n \rightarrow x$ (сильно), тогда $x_n \weakconv x$ в $X$ \\
+	В конечномерном пространстве слабая и сильная сходимости эквивалентны
+\end{utv}
+
+\begin{utv}[4 Полунепрерывность снизу нормы относительно слабой сходимости]
+	$x_n \weakconv x$ в $X$, тогда $||x||\le \varliminf\limits_{n\rightarrow\infty} ||x_n||$
+\end{utv}
+
+\begin{utv}[5 Свойство линейно ограниченных операторов, связанное со слабой сходимостью]
+	$\letus X, Y$ -- нп, $\letus x_n \weakconv x$ в $X$ $\letus A \in B(X, Y)$ \\
+	Тогда $A x_n \weakconv A x$ в $Y$
+\end{utv}
+
+\begin{theorem}
+	$X$ -- бп, $R \subset X^{**}$ -- бп, п/п $X^{**}$ \\
+	$X$ изометрически изоморфно $R$
+\end{theorem}
+
+\begin{defenition}[Рефлексивное пространство]
+  $X$ -- рефлексивное, если $R = X^{**}$:\\
+  $R = \{g \in X^{**} \mid \exists \, x \in X: g(f) = f(x), \forall f \in X^* \}$ \\
+  {\bf Замечание:} все гп, $l^p, L^p(E)$ рефлексивны, $1<p<\infty$
+\end{defenition}
+
+\begin{defenition}[Cужение]
+  $\letus$ $A \in B(X, Y), \, L \subset D(A)$ -- линейное многообразие\\
+  Тогда $\left. A \right|_L (x) = Ax, \, \forall x \in L; D(\left. A \right|_L) = L$ -- сужение $A$ на $L$
+\end{defenition}
+    
+\begin{theorem}[Принцип выбора (аналог. для сепараб. рефл. пр-ва)]
+  $\letus$ $\{u_n\}_{n \in \mathbb{N}} \subset U$, $U$ - гильбертово пространство;
+  $\exists M \ge 0$: $||u_n|| \le M, \quad \forall n \in \mathbb{N}$\\ 
+  Тогда $\exists \{u_{n_i}\}_{i \in \mathbb{N}} \subset \{u_n\}_{n \in \mathbb{N}}: \quad u_{n_i} \weakconv u,\ u \in U$
+\end{theorem}
+
+\begin{theorem}[Банаха-Сакса ( --//-- )]
+  $\letus$ $U$ - гильбертово пространство; $u_n  \weakconv u$\\
+  Тогда $\exists \{u_{n_i}\}_{i \in \mathbb{N}} \subset \{u_n\}_{n \in \mathbb{N}}: 
+  v_k = \frac{1}{k}\sum\limits_{i=1}^{k}u_{n_i} \Rightarrow v_k \longrightarrow u$ в $U$
+\end{theorem}
+
+\begin{defenition}[Выпуклый функционал]
+  $\letus$ $F: U \longrightarrow \mathbb{R}$, \
+  $F$ -- выпуклый функционал, если \\
+  $F(\lambda_1 x_1 + \lambda_2 x_2 + \dots + \lambda_k x_k) \le \lambda_1 F(x_1) + \lambda_2 F(x_2) + \dots + \lambda_k F(x_k),\\
+  \, \forall x_1, x_2, \dots x_k \in U; \, \forall \lambda_1, \lambda_2, \dots \lambda_k \in [0, 1]: \sum\limits_{i = 1}^{k}\lambda_i = 1$ \\
+  Любой линейный функционал выпуклый, но не наоборот
+\end{defenition}
+
+\begin{theorem}[О слабой полунепрерывности непрерывного выпуклого функционала]
+  $\letus$ $F$ - непрерывен в $U$, $U$ -- гп, $F$ - выпуклый\\
+  Тогда $\forall u \in U, \; \forall u_n \weakconv u : F(u) \le \varliminf\limits_{n \to \infty}F(u_n)$
+\end{theorem}
+
+\begin{theorem}[Штольц]
+  $\letus$ $\{x_n\}, \{y_n\} \subset \mathbb{R}, \;$
+  \begin{tabular}[t]{l}
+  $x_n \longrightarrow +\infty$, \\ $y_n \longrightarrow +\infty$
+  \end{tabular}
+  $\;y_{n+1} > y_n,\;\forall n \in \mathbb{N}, \; \exists \lim\limits_{n \to \infty} \frac{x_{n+1} - x_n}{y_{n+1} - y_n}$ -- конечный\\
+  Тогда $$\exists \lim\limits_{n \to \infty} \frac{x_n}{y_n}; \; 
+  \lim\limits_{n \to \infty} \frac{x_n}{y_n} = \lim\limits_{n \to \infty}\frac{x_{n+1} - x_n}{y_{n+1} - y_n}$$
+\end{theorem}
+
+\begin{defenition}[Сопряженный оператор]
+  $\letus$ $U$ -- гильбертово пространство, $A \in L(U) (= L(U, U)), \, \overline{D(A)} = U$\\
+  $D(A^*) \eqdef \{v \in U \mid \exists h \in U: (Au, v) = (u,h), \forall u \in D(A)\}$\\
+  $A^*$ -- сопряженный оператор. $A^*v=h$
+\end{defenition}
+
+\begin{utv}
+  $A^{*} \in L(U)$\\
+  Док-во:
+  $\letus$ $v_1, v_2 \in D(A^*) \ $
+\end{utv}
+
+\begin{theorem}[Cвойства сопряженного оператора]
+  $\letus$ $A \in B(U), \quad (D(A) = U)$\\
+  Тогда\begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+    \item $D(A^*) = U$
+    \item $A^* \in B(U)$
+    \item $||A^*|| = ||A||$
+    \item $A^{**} = (A^*)^* = A$
+  \end{enumerate}\end{minipage}
+\end{theorem}
+
+\section*{Самосопряженные операторы}
+
+\begin{defenition}[Самосопряженный оператор]
+$\letus$ $U$ -- гильбертово пространство; $A \in L(U)$ \\
+$A$ - самосопряженный: $A^* = A$
+\end{defenition}
+
+\begin{utv}[1]
+  $\letus$ A -- самосопряженный\\
+  Тогда $(Au, u) \in \mathbb{R}$
+\end{utv}
+
+\begin{utv}[2]
+  $\letus$ $\lambda \in \sigma_p(A)$, $A$ -- c/c\\
+  Тогда $\lambda \in \mathbb{R}$
+\end{utv}
+
+\begin{utv}[3]
+  $\letus$ $\lambda_1, \lambda_2 \in \sigma_p(A), \; \lambda_1 \neq \lambda_2$, $A$ -- c/c\\
+  $\letus$
+  \begin{tabular}[t]{c}
+  $u_1 \neq 0: Au_1 = \lambda_1 u_1$\\
+  $u_2 \neq 0: Au_2 = \lambda_2 u_2$
+  \end{tabular}
+  \\
+  Тогда $(u_1, u_2) = 0$
+\end{utv}
+
+\begin{theorem}[О вычислении собственных значений самосопряженных операторов]
+  $\letus$ $A \in B(U)$, $U$ -- гильбертово пространство; $A \neq 0$\\
+  $\letus$ $u_0 \in \overline{B(0, 1)}: |A(u_0, u_0)| = \sup\limits_{u\in \overline{B(0, 1)}}|(Au, u)|$\\
+  Тогда\begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+      \item $||u_0|| = 1 \quad (\Leftrightarrow u_0 \in \delta \overline{B(0, 1)})$
+      \item $Au_0 = \lambda_0u_0, \; \lambda_0 = (Au_0, u_0) \quad (u_0 - \text{с.в.}; \; \lambda_0 \in \sigma_p(A))$
+    \end{enumerate}\end{minipage}
+\end{theorem}
+
+\section*{Компактные операторы}
+
+\begin{defenition}[Компактный оператор]
+  $\letus$ $X, Y$ -- н. п\\ $\letus$ $A \in B(X, Y)$ -- компактный (вполне непрерывный), если он переводит ограниченное в $X$ множество
+  в предкомпакт в $Y$\\
+  $\letus$ $B \subset X$; $B$ - огр. $\Rightarrow$ $A(B)$ - предкомпакт в $Y$
+\end{defenition}
+
+\begin{theorem}[Th1]
+  $X, Y$ -- нормир. п\\
+  $\letus$ $A \in B(X, Y)$ -- компактный оператор. $x_n \longrightarrow x$ в $X$\\
+  Тогда $Ax_n \longrightarrow Ax$ в $Y$
+\end{theorem}
+
+\begin{theorem}[Th2]
+  $\letus$ $X, Y$ -- нормир. п\\
+  $\letus$ в $X$ работает принцип выбора. \\
+  ($X$ -- сепарабельное, рефлексивное, гильбертово пространство)\\
+  $\letus$ $A \in B(X, Y)$, $Ax_n \longrightarrow Ax$ в $Y$, $\forall x_n \weakconv x$ в $X$\\ 
+  Тогда $A$ -- комп. 
+\end{theorem}
+
+\begin{theorem}[Th3]
+  $\letus$ $A, B \in B(X)$, $A$ -- компактный оператор\\
+  Тогда $AB, BA$ -- компактны
+\end{theorem}
+
+\begin{sled}[Th 3]
+  $\letus$ $A\in B(X)$ -- компактный оператор. $\letus$ $\dim X = \infty$ \\
+  Тогда $\overline{\exists} A^{-1} \in B(X)$
+\end{sled}
+
+\section*{Компактные операторы в гильбертово пространство}
+
+\begin{lemma}[о непрерывности скалярного проведения]
+  $\letus$ \begin{tabular}[t]{l}$u_n \weakconv u$ в $U$\\$v_n \longrightarrow v$\end{tabular} (U -- гильбертово пространство)\\
+  Тогда $(u_n, v_n) \longrightarrow (u, v)$\\
+  !!! Если обе последовательности сходятся слабо, то из этого не следует сход. с. п.
+\end{lemma}
+
+\begin{utv}
+  $\letus$ $A \in B(U)$ -- компактный оператор\\
+  Тогда $A^*$ -- компактный.
+\end{utv}
+
+\begin{lemma}[1]
+  $\letus$ $A \in B(U)$ -- компактный, $\lambda \not = 0$\\
+  Тогда $R(A - \lambda I)$ -- замкнуто в $U$
+\end{lemma}
+
+\begin{lemma}[2]
+  $\letus$ $A \in B(U)$ -- компактный, $\lambda \not = 0$\\
+  Тогда\begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+      \item $U = \ker(A -\lambda I) \oplus R(A^* - \overline{\lambda} I)$
+      \item $U = \ker(A^* -\overline{\lambda}I) \oplus R(A - \lambda I)$
+    \end{enumerate}\end{minipage}
+\end{lemma}
+
+
+\begin{lemma}[3]
+  \noindent Обозначение: $k \in \mathbb{N}$, $H_k = R((A - \lambda I)^k)$ \\
+  $\exists k_0 \in \mathbb{N}$: 
+  $H_{k_0 + m} = H_{k_0}$, $\forall m \in \mathbb{N}$ \\
+  (к концу док-ва: из последовательности изолированых точек не выбрать сходящуюся подпосл.)
+\end{lemma}
+
+
+\begin{lemma}[4]
+  $\letus$ $\lambda \not = 0, A \in B(U)$, $A$ -- компактный, $U$ -- гильбертово пространство\\
+  Тогда\begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+      \item $\ker(A -\lambda I) = \{0\} \Leftrightarrow R(A - \lambda I) = U$
+      \item $\ker(A^* -\lambda I) = \{0\} \Leftrightarrow R(A^* - \overline{\lambda}\,\overline{I}) = U$
+      \end{enumerate}\end{minipage}
+\end{lemma}
+
+\begin{sled}[Критерий принадлежности резольвентному множеству]
+  $\letus$ $U$ -- г. п.,  $\lambda \ne  0, \; A \in B(U)$ -- компактный\\
+  Тогда если $\Ker(A -\lambda I) = \{0\}$, либо $R(A - \lambda I) = U$, то $\lambda \in \rho(A)$
+\end{sled}
+
+\begin{theorem}[Альтернатива Фредгольма]
+  $\letus$ $\lambda \ne 0, \, A \in B(U), \, A$ -- компактный в гильбертово пространство $U$, $\lambda \in \mathbb{C}(\mathbb{R})$
+  \begin{enumerate}
+    \item Если $(A - \lambda I)x = 0$ имеет только одно решение (нет ненулевых решений), то 
+    $\forall f \in U \exists! \, x \in U: (A - \lambda I)x = f$
+    \item Если $(A - \lambda I)x = 0$ имеет ненулевые решения, то $(A - \lambda I)x = f$ разрешимо, при том, единственным образом, 
+    если $f\in Ker(A^* - \overline{\lambda}I)^\perp$
+  \end{enumerate}
+\end{theorem}
+
+\begin{lemma}[5]
+  $\letus$ $\{\lambda_k\}_{k \in \mathbb{N}} \subset \sigma_p(A)$;\\
+  $\letus$ $\lambda_k \not = 0, \; \forall k \in \mathbb{N}$ (каждое СЧ встречается не большее число раз, чем его кратность)\\
+  Тогда $\exists \{y_k\}_{k \in \mathbb{N}}$ -- линейно независимая, $Ay_k = \lambda_k y_k, \; \forall k \in \mathbb{N}$
+\end{lemma}
+
+\begin{defenition}[Кратность собственных чисел]
+  $\letus$ $\lambda \in \Sigma_p(A)$\\
+  Кратность СЧ $\dim\Ker(A - \lambda I) \in \mathbb{N} \cup \{\infty\}$
+\end{defenition}
+
+\begin{defenition}[Точка сгущения]
+Точка $x$ -- точка сгущения оператора $A$,
+если в любой окрестности $x$ содержится бесконечное число элементов из А.
+\end{defenition}
+
+\begin{theorem}[О спектре компактного оператора]
+  $\letus$ $A \in B(U)$, $A$ -- компактен\\
+  Спектр $\sigma(A)$ не более чем СЧетен, и не будет иметь точек сгущения, за исключением, быть может нуля.
+  Каждое ненулевое СЧ имеет конечную кратность.
+\end{theorem}
+
+\begin{zam}[1]
+  Из док-ва ясно что СЧ можно занумеровать в порядке невозростания их модулей с учетом кратности \\
+  $|\lambda_1|\le|\lambda_2|\le|\lambda_3|\le \dots$
+\end{zam}
+
+\begin{zam}[2]
+  Теорема справедлива не только для гильбертовых пространств
+\end{zam}
+
+\begin{theorem}
+  $\letus$ $\lambda \not = 0$ - СЧ оператора $A$ ($A$ - \underline{компактен}  в $U$ - гильбертовом пространстве)\\
+  Тогда $\overline{\lambda}$ - СЧ $A^*$, причем $\dim(\ker(A -\lambda I)) = \dim(\ker(A^*-\overline{\lambda}I))$
+  (Этот факт имеет место только для компактных операторов)
+\end{theorem}
+
+\section*{Компактные самосопряженные операторы в г. п.}
+\begin{theorem}[О существовании собственного вектора самосопряженного оператора]
+  $\letus$ $A$ - самосопряженный, компактный в гильбертовм пространстве $U$\\
+  $\letus$ $A \not = 0$, тогда $\exists \lambda \not = 0, \ x \not = 0: Ax = \lambda x$
+\end{theorem}
+
+\begin{theorem}[Гильберта-Шмидта]
+  $\letus$ $U$ - сепарабельное гильбертово пространство\\
+  $\letus$ $A$ - самосопряженный, компактный в $U$\\
+  Тогда $\exists \{y_i\}_{i=1}^{\infty}$ -- ортонормированный базис $U$: $Ay_i = \lambda_i y_i, \; \forall i \in \mathbb{N}$
+\end{theorem}
+\end{document}
