@@ -1,0 +1,66 @@
+% FAN for dummies
+% Written by Igor Pinaev, SPbSTU, 2015
+% Edited by Eugene Nemich 
+
+\documentclass{article}
+
+\usepackage[russian]{babel}   
+\usepackage[utf8]{inputenc}
+%\usepackage[T2A]{fontenc}
+
+\usepackage[a4paper, includefoot, 
+  left=1.0cm, right=1.0cm, 
+  top=1.0cm, bottom=1.0cm, 
+  headsep=1cm, footskip=1cm]{geometry}
+
+\usepackage{amsthm, amsmath, amssymb}
+\usepackage{mathtools}
+\usepackage{enumitem}
+
+\usepackage[fontsize=14]{scrextend}
+\renewcommand{\baselinestretch}{1.2}
+
+\newtheoremstyle{truestyle}
+  {\topsep}{\topsep}%
+  {\rmfamily}{}%
+  {\bfseries}{}%
+  {\newline}{}%
+
+\theoremstyle{truestyle}
+\newtheorem*{definition}{Определение}
+\newtheorem*{theorem}{Теорема}
+\newtheorem*{lemma}{Лемма}
+\newtheorem*{utv}{Утверждение}
+\newtheorem*{sled}{Следствие}
+\newtheorem*{zam}{Замечание}
+%\pagestyle{empty}
+
+\DeclareMathSizes{14}{14}{8}{6}
+
+%%%%%%%%%%%%%% MY COMMANDS %%%%%%%%%%%%%
+\newcommand{\n}{\vspace{\baselineskip}}  
+\newcommand{\weakconv}{\xrightharpoonup{\quad\,}}
+\newcommand{\Ker}{\text{Ker}}
+\newcommand{\dist}{\text{dist}}
+\newcommand{\Lin}{\text{Lin}}
+\newcommand{\eqdef}{\overset{\text{\tiny def}}=}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{
+\def\letus{%
+  \mathord{\setbox0=\hbox{$\exists$}%
+    \hbox{\kern 0.125\wd0%
+      \vbox to \ht0{%
+        \hrule width 0.75\wd0%
+        \vfill%
+        \hrule width 0.75\wd0}%
+      \vrule height \ht0%
+      \kern 0.125\wd0}%
+  }%
+}
+
+\begin{document}
+  \include{intro}
+  \include{sem_2}
+  \include{sem_3}
+\end{document}
