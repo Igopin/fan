@@ -5,15 +5,43 @@
   \rule{\textwidth}{1pt}
 \end{center}
 
+\begin{utv}
+  $C_{0}^{\infty}(\Omega)$ плотно в $L^p(\Omega)$
+\end{utv}
+
 \begin{definition}[Усреднение]
-$\letus \, u \in L^1(\Omega), \; \Omega \subset \mathbb{R}$ -- ограниченая область
+$\letus \, u \in L^1(\Omega), \; \Omega \subset \mathbb{R}^n$ -- ограниченная область\\
+$$u_\rho(x) = \int\limits_{\Omega} \omega_\rho(x-y)u(y)dy, \, \forall x \in \mathbb{R}^n$$
+$u_\rho(x)$ -- усреднение функции
 \end{definition}
 
 \begin{lemma}[Дюбуа-Раймонда]
-  Пусть $u \in L^1_{loc}(\Omega)$\\
-  $$\int\limits_\Omega uq dx = 0, \; \forall q \in C_0^\infty(\Omega)$$
+ Пусть \begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+    \item $u \in L^1_{loc}(\Omega)$
+    \item $\int\limits_\Omega uq dx = 0, \; \forall q \in C_0^\infty(\Omega)$
+    \end{enumerate}\end{minipage}\\
+  %$u \in L^1_{loc}(\Omega)$ и $\int\limits_\Omega uq dx = 0, \; \forall q \in C_0^\infty(\Omega)$ \\
+  Тогда $u = 0$ почти всюду в $\Omega$
 \end{lemma}
 
 \begin{definition}
-  Пусть $u \in Loc_{loc}^1(\Omega)$, если $u \in L^1(K) \forall K \subset \Omega$
+  $u \in L^1_{loc}(\Omega)$, если $u \in L^1(K)$ $\forall K \subset \Omega$
 \end{definition}
+
+\begin{definition}[Компактное вложение]
+  Пусть \begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+    \item $\overline{\Omega'}$ -- компакт
+    \item $\overline{\Omega'} \subset \Omega$
+  \end{enumerate}\end{minipage}\\
+
+  \noindent Тогда $\Omega' \subset\subset \Omega$ -- компактное вложение $\Omega'$ в $\Omega$
+\end{definition}
+
+\begin{theorem}[Рисс]
+  Пусть $F$ -- предкомпакт в $L^p(\Omega)$
+  $\Longleftrightarrow$ \begin{minipage}[t]{0.8\linewidth}\begin{enumerate}[itemsep=1mm]
+      \item $\exists M \ge 0: ||u||_{L^p(\Omega)} \le M, \; \forall u \in F$
+      \item $\sup\limits_{|z| < \rho}\sup\limits_{u \in F} ||u(x+z)-u(x)||_{L^p(\Omega)} = f(\rho) \underset{\rho \rightarrow 0}{\longrightarrow} 0$
+  \end{enumerate}\end{minipage}
+      
+\end{theorem}
